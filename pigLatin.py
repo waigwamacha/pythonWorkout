@@ -28,15 +28,29 @@ def pig_sentence():
 
 # pig_sentence()
 
+def strsort(sorted_str):
+    """Takes a string and returns it sorted"""
+    return ''. join(sorted(sorted_str))
+
+# print(strsort('kamenju'))
+
+def strsort_comma(sentence3):
+    """Takes a sentence and splits it into words, sorts them returning them with a comma in-between the words"""
+    word3 = sentence3.split(" ")
+    newSentence = " , ".join(sorted(word3))
+    print(newSentence)
+
+# strsort_comma('a good boy')
+
 def ubbi_dubbi():
-    """Translate sentence into ubbu dubbi byt prefacing every vowel with ub"""
+    """Translate sentence into ubbu dubbi by prefacing every vowel with ub"""
     word1 = str(input("Enter word that you want translated: "))
     ubbi_sentence = []
     for letter in word1:
         if letter in 'aeiou':
-            ubbi_sentence = ubbi_sentence.append(f'ub{letter}')
+            ubbi_sentence.append(f'ub{letter}')
         else:
-            ubbi_sentence = ubbi_sentence.append(letter)
+            ubbi_sentence.append(f'{letter}')
     print(''.join(ubbi_sentence))
 
 ubbi_dubbi()
