@@ -22,4 +22,14 @@ def get_final_line(filename):
     print(final_line)
 
 
-get_final_line(fakefile)
+# get_final_line(fakefile)
+
+with open('passwd.txt') as passwd:
+    passnames = {}
+    for line in passwd:
+        # print(line)
+        if not line.startswith(('#')):
+            user_info = line.split(':')
+            print(user_info)
+            passnames[user_info[0]] = user_info[2] 
+    print(passnames)
