@@ -1,7 +1,9 @@
 from io import StringIO
 from collections import Counter
 import os
-
+import pathlib
+import csv 
+from random import randrange
 
 fakefile = StringIO('''
 nobody:*:-2:-2::0:0:Unprivileged User:/var/empty:/usr/bin/false
@@ -91,7 +93,7 @@ def find_longest_word(filename):
                     max_word = word
         print(max_word)
 
-find_longest_word('passwd.txt')
+# find_longest_word('passwd.txt')
 
 def find_all_longest_words(dirname):
     """Find all longest words in multiple
@@ -103,4 +105,33 @@ def find_all_longest_words(dirname):
         if os.path.isfile(os.path.join(dirname,\
             filename))}
 
-print(find_all_longest_words('books'))
+# print(find_all_longest_words('books'))
+
+# p = pathlib.Path('books')
+# for one_filename in p.iterdir(): 
+#     print(one_filename)
+    # with one_filename[1].open() as f:
+    #     lines = f.readline().split()
+    #     print(lines[0:15])
+
+def passwd_to_csv(file1, file2):
+    with open(file1) as input:
+        with open(file2, 'w') as output:
+            infile = csv.reader(input, delimiter=':')
+            outfile = csv.writer(output, delimiter='\t')
+            for line in infile:
+                if len(line) > 1:
+                    outfile.writerow((line[0], line[2]))
+
+    print(file2)
+
+# passwd_to_csv('passwd.txt', 'this.csv')
+
+def rand_nums(file1):
+    with open(file1) as output:
+        outfile = csv.writer(output)
+        for num in range(10):
+            num = randrange(10,100)
+            outfile.writerow(num[:])
+
+rand_nums('file.csv')
