@@ -3,7 +3,8 @@ from collections import Counter
 import os
 import pathlib
 import csv 
-from random import randrange
+import glob 
+import json 
 
 fakefile = StringIO('''
 nobody:*:-2:-2::0:0:Unprivileged User:/var/empty:/usr/bin/false
@@ -134,4 +135,91 @@ def rand_nums(file1):
             num = randrange(10,100)
             outfile.writerow(num[:])
 
-rand_nums('file.csv')
+# rand_nums('file.csv')
+
+def print_scores(dirname):
+    """Takes a directory as argument and \
+        prints a summary of student scores founs
+    """
+    scores = {}
+
+    for filename in glob.glob(f'{dirname}/*.json'):
+        print(filename)
+        scores[filename] = {}
+        print(scores)
+
+        with open(filename) as infile:
+            for result in json.load(infile):
+                for subject, score in result.items():
+                    scores[filename].setdefault(subject, [])
+                    scores[filename][subject].append(score)
+
+    for one_class in scores:
+        print(one_class)
+        for subject, subject_scores in scores[one_class].items():
+            min_score = min(subject_scores)
+            max_score = max(subject_scores)
+            average_score = (sum(subject_scores)/
+                                len(subject_scores))
+
+            print(subject)
+            print(f'\tmin {min_score}')
+            print(f'\tmax {max_score}')
+            print(f'\taverage {average_score}')
+        
+# print_scores('scores')
+def find_files(dirname):
+    for filename in glob.glob(f'{dirname}/*.pdf'):
+        print(filename)
+
+# find_files('/Users/macbook/Desktop')
+
+def csv_to_json(csvfile, jsonfile):
+    data = {}
+    with open(csvfile) as csvf:
+        csvreader = csv.DictReader(csvf)
+        print(csvreader)
+
+        # for rows in csvreader:
+        #     key = rows['Username']
+        #     data[key] = rows
+
+# data1 = {}
+# with open('this.csv') as csvf:
+#         csvreader = csv.DictReader(csvf)
+#         print(csvreader[0])
+#         for rows in csvreader:
+#             key = rows[0]
+#             data1[key] = rows
+#         print(data1)
+
+def reverse_lines(file1, file2):
+    """
+    takes an input file and reverses all characters, saving them in a new file, file2
+    """
+    with open(file1) as input, open(file2, 'w') as output:
+        for word in input:
+            word.rstrip() #to remove the newline character at the end
+            word1 = word[::-1]
+            output.write(f'{word1}\n')
+            print(word1)
+
+# reverse_lines('lines.txt', 'reverse.txt')
+
+def vowels_consonants(file1, file2):
+    """
+    takes a file, file1, finds its vowels and copies them to another file, file2
+    """
+    present_vowels = []
+    vowels = ['a', 'e', 'i', 'o', 'u']
+    with open(file1) as infile, open(file2, 'w') as output:
+        for word in infile:
+            word.rstrip()
+            for vowel in vowels:
+                if vowel in word:
+                    output.write(f'{vowel}')
+                    present_vowels.append(vowel)
+    print(present_vowels)
+
+vowels_consonants('wcfile.txt', 'vowels.txt')
+
