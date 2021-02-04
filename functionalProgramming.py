@@ -88,21 +88,60 @@ def flatten_list(multiple_lists):
 
 # print(flatten_list([[1,2], [3,4]]))
 def flatten_odd_ints(mylists):
-    return [elem
+    """takes multiple lists and returns all odd integer values as a list"""
+    return [int(elem)
         for mylist in mylists
         for elems in mylist
         for elem in elems.split()
-        if int(elem.isdigit())
-        if elem/2 != 0]
+        if elem.isdigit()
+        if int(elem)%2 == 0
+        ]
 
-print(flatten_odd_ints([['1 a c d 32 12'], ['a c 3r 54']]))
+# print(flatten_odd_ints([['1 a 9 c d 32 12'], ['a c 57 3r 54']]))
 
-# many_levels = [['1 a c d 32 12'], ['a c 3r 54']]
-# for level in many_levels:
-#     for nums in level:
-#         for num in nums.split():
-#             # print(num)
-#             if num.isdigit():
-#                 num = int(num)
-#                 if num/2 != 0:
-#                     print(num)
+
+def pig_file(somefile):
+    """Takes a files and returns a string with the files contents translated into pig latin"""
+    # words = str(input("Enter a word: ")).split()
+    # return ' '.join(pig_word)
+    with open(somefile) as f:
+        for line in f:
+            for word in line.split():
+                if word[0] in 'aeiou':
+                    pig_word = f'{word[0:]}way'
+                pig_word = f'{word[1:]}{word[0]}ay'
+    return ' '.join(word)
+
+# print(pig_file('frakenstein.txt'))
+
+def plword(word):
+    if word[0] in 'aeiou':
+        return word + 'way'
+    return word[1:] + word[0] + 'ay'
+
+def plfile(filename):
+    return ' '.join(plword(one_word)
+            for one_line in open(filename)
+            for one_word in one_line.split())
+
+# print(plfile('frakenstein.txt'))
+
+def funcfile(somefile, somefunc):
+    """invokes the somefunc function on each word of somefile and returns a string"""
+    return ' '.join(somefunc(one_word)
+                    for one_line in open(somefile)
+                    for one_word in one_line.split())
+
+# print(funcfile('frakenstein.txt', plword))
+
+d = {'a':1, 'b':2, 'c':3}
+
+def flip_dict(somedict):
+    """flip a dict so the keys are values and values are keys"""
+    flipped_dict = {}
+    for k,v in somedict.items():
+        for key, value in flipped_dict.items():
+            flipped_dict['key'] = somedict['k']
+            print(flipped_dict)
+
+flip_dict(d)
