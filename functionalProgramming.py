@@ -138,10 +138,21 @@ d = {'a':1, 'b':2, 'c':3}
 
 def flip_dict(somedict):
     """flip a dict so the keys are values and values are keys"""
-    flipped_dict = {}
-    for k,v in somedict.items():
-        for key, value in flipped_dict.items():
-            flipped_dict['key'] = somedict['k']
-            print(flipped_dict)
+    return {v:k 
+                for k, v in somedict.items()}
 
-flip_dict(d)
+# flip_dict(print({'a':1, 'b':2, 'c':3}))
+
+def vowel_count():
+    """counts number of vowels in a word and returns word as key, num of vowels as value"""
+    words = 'this is an easy test'
+    mydict = {}
+    count = 0
+    for word in words.split():
+        if word not in mydict:
+            if 'aeiou' in word:
+                count += 1
+            mydict[word] = count
+    print(mydict)
+        
+vowel_count()
