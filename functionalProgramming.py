@@ -145,14 +145,88 @@ def flip_dict(somedict):
 
 def vowel_count():
     """counts number of vowels in a word and returns word as key, num of vowels as value"""
-    words = 'this is an easy test'
+    words = 'this is not an easy teest'
     mydict = {}
     count = 0
+    vowel = ['a', 'e', 'i', 'o', 'u']
     for word in words.split():
         if word not in mydict:
-            if 'aeiou' in word:
-                count += 1
+            for letter in word:
+                if letter in vowel:
+                    count = count + 1
             mydict[word] = count
     print(mydict)
         
-vowel_count()
+# vowel_count()
+
+def examplefunct(somedict):
+    """
+    takes in a dict and returns the square of its values
+    """
+    return {k:v*v  
+                for k, v in somedict.items()}
+
+d = {'a':1, 'b':2, 'c':3}
+
+def transform_values(somefunc, somedict):
+    """
+    takes in a function and applies it to a dictionary
+    """
+    return somefunc(somedict)
+
+
+# print(transform_values(examplefunct, d))
+
+def vocalicWord(somefile):
+    """
+    checks whether a word is supervocalic and returns a set of the words
+    """
+    vowels = {'a', 'e', 'i', 'o', 'u'}
+    return {word.strip()    
+                for one_line in open(somefile)
+                for word in one_line.split()
+                if vowels < set(word.lower())}
+
+
+# print(vocalicWord('frakenstein.txt'))
+
+import string
+
+
+def gematria_dict():
+    # lower_cases = string.ascii_lowercase
+    return {index: char 
+            for char, index in enumerate(string.ascii_lowercase, 
+                            start=1)}
+
+# print(gematria_dict())
+
+def user_preferences(somefile):
+    """takes in a file and turns its contents into a dict"""
+    new_dict = {}
+    with open(somefile, 'r') as file:
+        for one_line in file:
+            k, v = one_line.strip().split('=')
+            if v.isdigit():
+                new_dict[k] = int(v) 
+    return new_dict
+            
+
+
+# print(user_preferences('config.txt'))
+
+import json 
+def json_to_dict():
+    """
+    take a json file, cities.json, and return a dict whose keys are city names and values are population
+    """
+    citydict = {}
+    f = open('cities.json')
+    data = json.load(f)
+    for value in data:
+        print(value)
+        # citydict[data[city]] = data[population]
+    print(citydict)
+    f.close()
+
+json_to_dict()
