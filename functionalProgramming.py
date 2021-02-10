@@ -190,16 +190,6 @@ def vocalicWord(somefile):
 
 # print(vocalicWord('frakenstein.txt'))
 
-import string
-
-
-def gematria_dict():
-    # lower_cases = string.ascii_lowercase
-    return {index: char 
-            for char, index in enumerate(string.ascii_lowercase, 
-                            start=1)}
-
-# print(gematria_dict())
 
 def user_preferences(somefile):
     """takes in a file and turns its contents into a dict"""
@@ -211,22 +201,77 @@ def user_preferences(somefile):
                 new_dict[k] = int(v) 
     return new_dict
             
-
+def debug(func):
+    def _debug(*args, **kwargs):
+        result = func(*args, **kwargs)
+        print(
+            f"{func.__name__}(args: {args}, kwargs: {kwargs}) -> {result}"
+        )
+        return result
+    return _debug
+# @decorator function to debug
 
 # print(user_preferences('config.txt'))
 
 import json 
-def json_to_dict():
+def json_to_dict(f):
     """
     take a json file, cities.json, and return a dict whose keys are city names and values are population
     """
-    citydict = {}
-    f = open('cities.json')
-    data = json.load(f)
-    for value in data:
-        print(value)
-        # citydict[data[city]] = data[population]
-    print(citydict)
-    f.close()
+    return {value['city']: int(value['population'])
+            for value in json.load(open(f))}
 
-json_to_dict()
+# print(json_to_dict('cities.json'))
+
+import string
+
+def gematria_dict():
+    # lower_cases = string.ascii_lowercase
+    return {index: char 
+            for char, index in enumerate(string.ascii_lowercase, 
+                            start=1)}
+
+# print(gematria_dict())
+
+def gematria_for(somestr):
+    """
+    takes a single word as argument and returns the gematria score for that word
+    """
+    gematria_pairs = {index: char 
+            for char, index in enumerate(string.ascii_lowercase, 
+                            start=1)}
+    score_list = []
+    for letter in somestr:
+        for k,v in gematria_pairs.items():
+            if letter in k:
+                score = v
+                score_list.append(score)
+    return sum(score_list)
+
+    #option 2 using .get
+    # total_scores = 0
+    # return sum(gematria_pairs.get(letter, 0)
+    #         for letter in somestr)
+
+# print(gematria_for('daniel murage'))
+
+def gematria_equal_words(someword):
+    """
+    takes a single word and returns those a list of those words whose gematria scores match the single word
+    """
+    my_score = gematria_for(someword.lower())
+    return [one_word.strip()
+            for one_word in open('words.txt')
+            if gematria_for(one_word.lower()) == my_score]
+
+
+city_temps = {'nairobi': 45, 'kagumo': 56, 'providence': -56}
+def temp_changes(tempdict):
+    """ 
+    takes a dict and converts farenheit values to celsius
+    """
+    return {k: (v-32)*5/9 for k,v in tempdict.items()}
+
+# print(temp_changes(city_temps))
+
+
