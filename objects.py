@@ -45,7 +45,7 @@ class Bowl():
 
     def add_scoops(self, *new_scoops):
         for scoop in new_scoops:
-            if len(self.scoops) < Bowl.max_bowls:
+            if len(self.scoops) < self.max_bowls:
                 self.scoops.append(scoop)
             # else:
             #     self.scoops.pop(-1)
@@ -62,6 +62,16 @@ class Bowl():
 # b = Bowl()
 # b.add_scoops(s1, s3, s2, s4, s5)
 # print(b)
+
+class BigBowl(Bowl):
+    """ 
+    child class of Bowl, but this accepts upto 5 bowls
+    """
+    max_bowls = 6
+
+# b3 = BigBowl()
+# b3.add_scoops(s1, s3, s2, s4, s5, s4)
+# print(b3)
 
 class Book():
     """ 
@@ -146,7 +156,46 @@ class Transaction():
             Transaction.current_balance = sum(self.total_amount)
         print(Transaction.current_balance)
 
-twenty = Transaction()
-twenty.new_transaction(10, -100, -50, 350)
+# twenty = Transaction()
+# twenty.new_transaction(10, -100, -50, 350)
+
+class Envelope():
+    """ 
+    envelope class with two attributes, weight(float) and was sent(Bool, default=False)
+    """
+    def __init__(self, weight, sent=False):
+        self.weight = weight
+        self.sent = sent
+        self.total_postage = float(weight*10)
+
+    def send(self):
+        if self.total_postage >= float(self.weight*10):
+            self.sent = True
+            print(f'Postage was sent: {self.sent}')
+
+    def postage_needed(self):
+        needed = self.total_postage
+        return f"We need postage of {needed}"
+
+    def add_postage(self, new_postage):
+        self.total_postage += new_postage
+        return f'Postage added. Total: {self.total_postage}'
+
+class BigEnvelope(Envelope):
+
+    def __init__(self, weight):
+        super().__init__(weight)
+        self.total_postage = weight*15
+
+    def postage_needed(self):
+        needed = self.weight*15
+        return f"We need postage of {needed}"
+
+d4 = Envelope(12)
+d4.send()
+print(d4.postage_needed())
+print(d4.add_postage(20))
+
+# print(d4.add_postage(20))
 
 
