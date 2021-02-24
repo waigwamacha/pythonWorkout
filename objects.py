@@ -191,11 +191,79 @@ class BigEnvelope(Envelope):
         needed = self.weight*15
         return f"We need postage of {needed}"
 
-d4 = Envelope(12)
-d4.send()
-print(d4.postage_needed())
-print(d4.add_postage(20))
+# d4 = Envelope(12)
+# d4.send()
+# print(d4.postage_needed())
+# print(d4.add_postage(20))
 
 # print(d4.add_postage(20))
+
+class FlexibleDict(dict):
+    """ 
+    returns the key value pair irregardless of the key type.
+    """ 
+    def __getitem__(self, key):
+        try:
+            if key in self:
+                pass
+            elif str(key) in self:
+                key = str(key)
+            elif int(key) in self:
+                key = int(key)
+        except ValueError:
+            pass
+        return dict.__getitem__(self,key)
+        
+
+# d = FlexibleDict()
+# d[1] = 100
+# d['a'] = 350
+# d['1'] = 650
+# print(d)
+# print(d['1'])
+
+class StringKeyDict(dict):
+    """ 
+    changes the dictionary's keys into string type
+    """ 
+    def __getitem__(self, key):
+        try:
+            if key in self:
+                key = str(key)
+        except ValueError:
+            pass
+        return (self, key)
+
+# fd = StringKeyDict()
+# fd[1] = 30
+# fd[2] = 40
+# print(fd[2])
+        
+
+class Animal():
+    """
+    parent class for animals sheep, wolf, snakes and parrots
+    """
+    def __init__(self, species, legs):
+        self.species = species
+        self.legs = legs
+
+class Sheep(Animal):
+    """
+    child class of animal
+    """
+    def __init__(self, species, legs, color):
+        super().__init__(species)
+        super().__init__(legs)
+        self.color = color
+
+    def __repr__(self):
+        print(self.color)
+        return '\n'.join(self.color, self.species, self.legs)
+
+d = Animal('mammal', 4)
+s = Sheep('white')
+print(s)
+
 
 
