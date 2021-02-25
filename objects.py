@@ -244,26 +244,46 @@ class Animal():
     """
     parent class for animals sheep, wolf, snakes and parrots
     """
-    def __init__(self, species, legs):
-        self.species = species
+    def __init__(self, sound, color, legs):
+        self.species = self.__class__.__name__
+        self.sound = sound
+        self.color = color
         self.legs = legs
+
+    def __repr__(self):
+        return f'A {self.color} {self.sound}-{self.species} with {self.legs} legs'
+
+# class ZeroLeggedAnimal(Animal):
+#     def __init__(self, color):
+#         super().__init__(color, 0)
+
+# class Snake(ZeroLeggedAnimal):
+#     def __init__(self, color):
+#         super().__init__(color)
 
 class Sheep(Animal):
     """
     child class of animal
     """
-    def __init__(self, species, legs, color):
-        super().__init__(species)
-        super().__init__(legs)
-        self.color = color
+    def __init__(self, color):
+        super().__init__('baa', color, 4)
 
-    def __repr__(self):
-        print(self.color)
-        return '\n'.join(self.color, self.species, self.legs)
+class Wolf(Animal):
+    def __init__(self, color):
+        super().__init__('woof', color, 4)
 
-d = Animal('mammal', 4)
-s = Sheep('white')
-print(s)
+
+class Parrot(Animal):
+    def __init__(self, color):
+        super().__init__('coo', color, 2)
+
+sheep = Sheep('black')
+wolf = Wolf('white')
+# anaconda = Snake('yellow')
+parrot = Parrot('blue')
+print(sheep)
+print(parrot)
+# print(sheep.species)
 
 
 
