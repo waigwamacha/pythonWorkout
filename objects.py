@@ -279,11 +279,83 @@ class Parrot(Animal):
 
 sheep = Sheep('black')
 wolf = Wolf('white')
-# anaconda = Snake('yellow')
 parrot = Parrot('blue')
-print(sheep)
-print(parrot)
+# print(sheep)
+# print(parrot)
 # print(sheep.species)
+
+class AnimalLair():
+    """
+    a place for animals to live peacefully and safely 
+    """
+    num_animals = 0
+    def __init__(self, id):
+        self.id = id
+        self.all_animals = []
+    def add_animals(self, *animals):
+        for animal in animals:
+            self.all_animals.append(animal)
+        # print(self.all_animals)
+        if animals:
+            AnimalLair.num_animals = len(self.all_animals)
+        # print(AnimalLair.num_animals)
+    def __repr__(self):
+        output = f'Cage {self.id}:\n'
+        output += '\n'.join('\t' + str(animal) for animal in self.all_animals)
+        
+        return output 
+
+
+class Zoo():
+    """
+    Zoo that contains Animallairs for different animals 
+    """
+    def __init__(self, id):
+        self.id = id
+        self.lairs = []
+
+    def add_lairs(self, *lairs):
+        for lair in lairs:
+            self.lairs.append(lair)
+
+    def animals_by_color(self, *colors):
+        return [animal
+                for color in colors
+                for lair in self.lairs
+                for animal in lair.all_animals
+                if animal.color == color]
+
+    def animals_by_legs(self, num_legs):
+        return [animal
+                for lair in self.lairs 
+                for animal in lair.all_animals
+                if animal.legs == num_legs]
+
+    def transfer_animal(self, target_zoo, transfer_animal):
+        return [target_zoo.lair[0].append(animal)
+                for lair in self.lairs
+                for animal in lair.all_animals
+                if animal == transfer_animal]
+
+
+c1 = AnimalLair(1)
+c2 = AnimalLair(2)
+z = Zoo(1)
+z2 = Zoo(2)
+z.add_lairs(c1, c2)
+z2.add_lairs(c2)
+c1.add_animals(wolf, sheep, parrot)
+c2.add_animals(sheep, wolf)
+# print(c1)
+# print(c2)
+# print(z)
+# print(z.animals_by_color('black', 'white'))
+# print(z.animals_by_legs(2))
+print(z.transfer_animal(z2, 'parrot'))
+
+    
+
+
 
 
 
