@@ -1,5 +1,5 @@
 import time
-
+import os
 
 class LoudIterator():
 
@@ -15,7 +15,7 @@ class LoudIterator():
     def __next__(self):
         print('\tNow in next')
         if self.index >= len(self.data):
-            print(f'\t self.index {self.index} is too big. Exiting')
+            # print(f'\t self.index {self.index} is too big. Exiting')
             raise StopIteration
 
         value = self.data[self.index]
@@ -35,12 +35,141 @@ g = foo()
 # for one_item in g:
 #     print(one_item)
 
-for index, letter in enumerate('abc'):
-    print(f'{index}: {letter}')
-    print(time.perf_counter())
+# for index, letter in enumerate('abc'):
+#     print(f'{index}: {letter}')
+    # print(time.perf_counter())
 
 class MyEnumerate():
     """
     class that works like the built-in enumerate function 
     """ 
-    
+    def __init__(self, data):
+        self.data = data 
+        self.index = 0
+
+    def __iter__(self):
+        return self 
+
+    def __next__(self):
+        if self.data == list(self.data) or str(self.data) or dict(self.data):
+            pass
+
+        if self.index >= len(self.data):
+            raise StopIteration
+        
+        value = (self.index, self.data[self.index])
+        self.index += 1
+        return value
+
+# for index, letter in MyEnumerate(range(15)):
+#     print(f'{index}: {letter}')
+
+class MyNewEnumerate():
+    """
+    class that works like the built-in enumerate function 
+    """ 
+    def __init__(self, data):
+        self.data = data 
+        self.index = 0
+
+    def __iter__(self):
+        return MyEnumerateIterator(self.data)
+
+class MyEnumerateIterator():
+    """
+    helper class for MyNewEnumerate 
+    """
+    def __init__(self, data):
+        self.data = data 
+        self.index = 0
+
+    def __next__(self):
+        if self.data == list(self.data) or str(self.data) or dict(self.data):
+            pass
+
+        if self.index >= len(self.data):
+            raise StopIteration
+        
+        value = (self.index, self.data[self.index])
+        self.index += 1
+        return value
+
+# e = MyNewEnumerate('abc')
+# print('\t*** A ***')
+# for index, letter in e:
+#     print(f'{index}: {letter}')
+# print('\t*** B ***')
+# for index, letter in e:
+#     print(f'{index}: {letter}')
+# print('\t*** C ***')
+# for index, letter in e:
+#     print(f'{index}: {letter}')
+
+class Circle():
+    """
+    class that takes in a sequence and the number that defines the 
+    number of times the elements will be displayed
+    """
+    def __init__(self, seq, num_times):
+        self.seq = seq 
+        self.num_times = num_times
+        self.index = 0
+
+    def __iter__(self):
+        return CircleIterator(self.seq, self.num_times)
+
+class CircleIterator():
+    """
+    helper class for the Circle class
+    """
+    def __init__(self, seq, num_times):
+        self.seq = seq
+        self.num_times = num_times
+        self.index = 0
+
+    def __next__(self):
+        if self.index >= self.num_times:
+            raise StopIteration
+        
+        values = (self.seq[self.index % len(self.seq)])
+        self.index += 1
+        return values
+        
+c =Circle('abcd', 20)
+# print(list(c))
+
+
+def read_all_filelines(dirname):
+    """
+    generator function to read all lines in files in a directory 
+    """
+    for filename in os.listdir(dirname):
+        full_filename = os.path.join(dirname, filename)
+
+        try:
+            for line in open(filename):
+                yield line
+        except OSError:
+            pass 
+
+# for one_line in read_all_filelines('/Users/macbook/Documents/python/pythonWorkout/books/'):
+#     print(one_line)
+
+
+def timepassed(someiterable):
+    """
+    genetor that accepts an iterable argument and provides a tuple with time between operations and the next output
+    """
+    last_time = None
+    for iterable in someiterable:
+        current_time = time.perf_counter() #gets current time
+        delta = current_time - (last_time or current_time)
+        last_time = time.perf_counter()
+
+        yield (delta, iterable)
+
+
+for t in timepassed('abcdefg'):
+    print(t)
+    time.sleep(2)
+
