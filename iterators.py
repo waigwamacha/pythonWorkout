@@ -169,7 +169,30 @@ def timepassed(someiterable):
         yield (delta, iterable)
 
 
-for t in timepassed('abcdefg'):
-    print(t)
-    time.sleep(2)
+# for t in timepassed('abcdefg'):
+#     print(t)
+#     time.sleep(2)
+
+def mychain(*data):
+    """
+    generator function that takes any number of arguments (iterables). calling it
+    returns the next item from the current iterable, or the first elem from subsequent iterable
+    """
+    for iterable in data:
+        for data in iterable:
+            yield data
+
+# e = mychain('abc', [1,2,3], {'a':1, 'b':2})
+# for item in e:
+#     print(item)
+
+def myzip(arg1, arg2):
+    """generator function that works like zip
+    """
+    for i in range(len(arg1)):
+        yield f"{arg1[i]}, {arg2[i]}"
+
+e = myzip('abc', [1,2,3])
+for item in e:
+    print(item)
 
